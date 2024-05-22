@@ -10,3 +10,4 @@ sudo  parted $OUTPUT_FILE mklabel msdos
 sudo  parted $OUTPUT_FILE mkpart primary fat32 1MiB $BOOT_PARTITION_SIZE_MB
 #----create rootfs partition starting at 100MB to end of disk. 
 sudo  parted $OUTPUT_FILE mkpart primary ext4 $BOOT_PARTITION_SIZE_MB 100%
+file $OUTPUT_FILE

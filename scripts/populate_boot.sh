@@ -1,6 +1,5 @@
 #!/bin/bash
 
-${PROJECT_ROOT_DIR}/scripts/mount_image.sh
 sudo mkdir -p ${PROJECT_ROOT_DIR}/mount/boot/boot/dtb
 sudo cp $KERNEL_FILE ${PROJECT_ROOT_DIR}/mount/boot/boot
 sudo cp $DEVICE_TREE_BINARY ${PROJECT_ROOT_DIR}/mount/boot/boot/dtb
