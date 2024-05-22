@@ -1,3 +1,9 @@
 [submodule "src/trusted-firmware-a"]
 	path = src/trusted-firmware-a
 	url = https://git.trustedfirmware.org/TF-A/trusted-firmware-a.git
+[submodule "src/linux"]
+	path = src/linux
+	url = git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+[submodule "src/u-boot"]
+	path = src/u-boot
+	url = git://git.denx.de/u-boot.git
