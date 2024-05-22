@@ -3,7 +3,9 @@
 	url = https://git.trustedfirmware.org/TF-A/trusted-firmware-a.git
 [submodule "src/linux"]
 	path = src/linux
-	url = https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git@v6.9
+	url = https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+	branch = v6.9
 [submodule "src/u-boot"]
 	path = src/u-boot
-	url = https://git.denx.de/u-boot.git@v2024.04
+	url = https://git.denx.de/u-boot.git
+	branch = v2024.04
