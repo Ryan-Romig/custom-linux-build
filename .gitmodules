@@ -1,6 +1,7 @@
 [submodule "src/trusted-firmware-a"]
 	path = src/trusted-firmware-a
 	url = https://git.trustedfirmware.org/TF-A/trusted-firmware-a.git
+	branch = lts-v2.10
 [submodule "src/linux"]
 	path = src/linux
 	url = https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
