@@ -27,6 +27,3 @@ export KERNEL_FILE=${CACHE_DIR}/Image
 export UBOOT_FILE=${CACHE_DIR}/u-boot-sunxi-with-spl.bin
 export UBOOT_SCRIPT_OUT_FILE=${CACHE_DIR}/boot.scr
 export BL31_BIN=${CACHE_DIR}/bl31.bin
-
-
-
