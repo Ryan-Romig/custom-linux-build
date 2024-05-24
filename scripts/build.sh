@@ -44,8 +44,8 @@ sudo dd if=${UBOOT_FILE} of=/dev/loop88 seek=8 bs=1024 status=progress
 
 
 ./scripts/download-rootfs.sh
-tar -xvf rootfs.tar.xz -C ${PROJECT_ROOT_DIR}/src/rootfs/
-sudo cp -r ${PROJECT_ROOT_DIR}/src/rootfs/* ${PROJECT_ROOT_DIR}/mount/rootfs >> /dev/null
+tar -xvf rootfs.tar.xz -C ${PROJECT_ROOT_DIR}/out/cache/rootfs/
+sudo cp -r ${PROJECT_ROOT_DIR}/out/cache/rootfs/* ${PROJECT_ROOT_DIR}/mount/rootfs >> /dev/null
 #sudo cp -r ${PROJECT_ROOT_DIR}/src/rootfs/rootfs/* ${PROJECT_ROOT_DIR}/mount/rootfs >> /dev/null
 
 #install debootstrap to rootfs
@@ -56,7 +56,7 @@ sudo cp -r ${PROJECT_ROOT_DIR}/src/rootfs/* ${PROJECT_ROOT_DIR}/mount/rootfs >> 
 
 
 
-sudo cp -r ${OUTPUT_DIR}/lib/* ${PROJECT_ROOT_DIR}/mount/rootfs/lib/ >> /dev/null
+sudo cp -r ${OUTPUT_DIR}/modules/lib/* ${PROJECT_ROOT_DIR}/mount/rootfs/lib/ >> /dev/null
 sudo umount ${PROJECT_ROOT_DIR}/mount/*
 #sudo dd if=/dev/loop88 of=/dev/sdc bs=1M status=progress
 sudo losetup -d /dev/loop88

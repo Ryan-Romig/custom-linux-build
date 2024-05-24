@@ -7,3 +7,5 @@ cp patch/dts/melodia.dts ${PROJECT_ROOT_DIR}/src/linux/arch/arm64/boot/dts/allwi
 cp patch/dts/Makefile ${PROJECT_ROOT_DIR}/src/linux/arch/arm64/boot/dts/allwinner/
 
 cp patch/melodia_defconfig ${PROJECT_ROOT_DIR}/src/linux/arch/arm64/configs/
+
+cp -r uwe5622 ${PROJECT_ROOT_DIR}/src/linux/drivers/net/wireless/
