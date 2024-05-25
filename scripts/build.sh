@@ -23,29 +23,29 @@ sudo mkfs.vfat -F 32 -n BOOT /dev/loop88p1
 #---label the rootfs partition ROOTFS and format as ext4
 sudo mkfs.ext4 -L ROOTFS /dev/loop88p2
 # mount the partitions to folder so we can write data to them
-sudo mount /dev/loop88p1 ${PROJECT_ROOT_DIR}/mount/boot
-sudo mount /dev/loop88p2 ${PROJECT_ROOT_DIR}/mount/rootfs
+sudo mount /dev/loop88p1 ${PROJECT_ROOT_DIR}mount/boot
+sudo mount /dev/loop88p2 ${PROJECT_ROOT_DIR}mount/rootfs
 #make the boot folder structure
-sudo mkdir -p ${PROJECT_ROOT_DIR}/mount/boot/boot/dtb
+sudo mkdir -p ${PROJECT_ROOT_DIR}mount/boot/boot/dtb
 
 #copy linux kernel to the boot partition
-sudo cp $KERNEL_FILE ${PROJECT_ROOT_DIR}/mount/boot/boot
+sudo cp $KERNEL_FILE ${PROJECT_ROOT_DIR}mount/boot/boot
 
-sudo cp $DEVICE_TREE_BINARY ${PROJECT_ROOT_DIR}/mount/boot/boot/dtb
+sudo cp $DEVICE_TREE_BINARY ${PROJECT_ROOT_DIR}mount/boot/boot/dtb
 #sudo cp u-boot/arch/arm/dts/sun50i-h618-orangepi-zero2w.dtb mount/boot/boot/
 
 #compile boot.cmd into a boot.scr for u-boot
-mkimage -C none -A arm64 -T script -d $UBOOT_SCRIPT_FILE ${PROJECT_ROOT_DIR}/out/boot.scr
-sudo cp ${PROJECT_ROOT_DIR}/out/boot.scr ${PROJECT_ROOT_DIR}/mount/boot/boot.scr
+mkimage -C none -A arm64 -T script -d $UBOOT_SCRIPT_FILE ${PROJECT_ROOT_DIR}out/boot.scr
+sudo cp ${PROJECT_ROOT_DIR}out/boot.scr ${PROJECT_ROOT_DIR}mount/boot/boot.scr
 
 #dont copy the u-boot binary like the commented out code, it needs to be at the right memory address per allwinner instructions. use dd with seek=8M
 #sudo cp u-boot/u-boot-sunxi-with-spl.bin mount/boot/
 sudo dd if=${UBOOT_FILE} of=/dev/loop88 seek=8 bs=1024 status=progress
 
 
-./scripts/download-rootfs.sh
-tar -xvf rootfs.tar.xz -C ${PROJECT_ROOT_DIR}/out/cache/rootfs/
-sudo cp -r ${PROJECT_ROOT_DIR}/out/cache/rootfs/* ${PROJECT_ROOT_DIR}/mount/rootfs >> /dev/null
+# ./scripts/download-rootfs.sh
+# tar -xvf rootfs.tar.xz -C ${PROJECT_ROOT_DIR}/out/cache/rootfs/
+sudo cp -r ${PROJECT_ROOT_DIR}out/cache/rootfs/* ${PROJECT_ROOT_DIR}mount/rootfs >> /dev/null
 #sudo cp -r ${PROJECT_ROOT_DIR}/src/rootfs/rootfs/* ${PROJECT_ROOT_DIR}/mount/rootfs >> /dev/null
 
 #install debootstrap to rootfs
@@ -56,8 +56,8 @@ sudo cp -r ${PROJECT_ROOT_DIR}/out/cache/rootfs/* ${PROJECT_ROOT_DIR}/mount/root
 
 
 
-sudo cp -r ${OUTPUT_DIR}/modules/lib/* ${PROJECT_ROOT_DIR}/mount/rootfs/lib/ >> /dev/null
-sudo umount ${PROJECT_ROOT_DIR}/mount/*
+sudo cp -r ${OUTPUT_DIR}/modules/lib/* ${PROJECT_ROOT_DIR}mount/rootfs/lib/ >> /dev/null
+sudo umount ${PROJECT_ROOT_DIR}mount/*
 #sudo dd if=/dev/loop88 of=/dev/sdc bs=1M status=progress
 sudo losetup -d /dev/loop88
 
