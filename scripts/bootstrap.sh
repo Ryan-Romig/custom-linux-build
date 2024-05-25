@@ -5,10 +5,12 @@ export IMAGE_NAME="linux.img"
 
 export PROJECT_ROOT_DIR=${PWD}/
 export OUTPUT_DIR=${PROJECT_ROOT_DIR}out
-export MODULES_OUTPUT_PATH=${OUTPUT_DIR}/modules
 export CACHE_DIR=$OUTPUT_DIR/cache
 
+export MODULES_OUTPUT_PATH=${CACHE_DIR}/modules
+
 export LOOP_DEVICE=/dev/loop88
+
 
 export OUTPUT_FILE=${OUTPUT_DIR}/${IMAGE_NAME}
 
