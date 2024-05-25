@@ -5,7 +5,7 @@
 [submodule "src/linux"]
 	path = src/linux
 	url = https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
-	branch = v6.9
+	branch = v6.1
 [submodule "src/u-boot"]
 	path = src/u-boot
 	url = https://git.denx.de/u-boot.git
