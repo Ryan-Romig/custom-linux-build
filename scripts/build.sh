@@ -56,7 +56,7 @@ sudo cp -r ${PROJECT_ROOT_DIR}/out/cache/rootfs/* ${PROJECT_ROOT_DIR}/mount/root
 
 
 
-sudo cp -r ${OUTPUT_DIR}/lib/* ${PROJECT_ROOT_DIR}/mount/rootfs/lib/ >> /dev/null
+sudo cp -r ${CACHE_DIR}/modules/lib/* ${PROJECT_ROOT_DIR}/mount/rootfs/lib/ >> /dev/null
 sudo umount ${PROJECT_ROOT_DIR}/mount/*
 #sudo dd if=/dev/loop88 of=/dev/sdc bs=1M status=progress
 sudo losetup -d /dev/loop88

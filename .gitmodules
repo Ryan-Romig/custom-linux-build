@@ -1,12 +1,12 @@
-[submodule "src/trusted-firmware-a"]
-	path = src/trusted-firmware-a
-	url = https://git.trustedfirmware.org/TF-A/trusted-firmware-a.git
-	branch = lts-v2.10
-[submodule "src/linux"]
-	path = src/linux
-	url = https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
-	branch = v6.9
 [submodule "src/u-boot"]
 	path = src/u-boot
-	url = https://git.denx.de/u-boot.git
+	url = https://source.denx.de/u-boot/u-boot.git
 	branch = v2024.04
+[submodule "src/linux"]
+	path = src/linux
+	url = https://github.com/torvalds/linux.git
+	branch = v6.9
+[submodule "src/trusted-firmware-a"]
+	path = src/trusted-firmware-a
+	url = https://github.com/ARM-software/arm-trusted-firmware.git
+	branch = lts-v2.10.4
