@@ -70,8 +70,8 @@ ifeq ($(CONFIG_RK_WIFI_DEVICE_UWE5622),y)
 export CONFIG_WCN_SDIO = y
 #export CONFIG_WCN_USB = y
 # export CONFIG_WCN_GNSS = y
-#ccflags-y += -DCONFIG_CHECK_DRIVER_BY_CHIPID
-ccflags-y += -DCONFIG_UWE5622
+ccflags-y += -DCONFIG_CHECK_DRIVER_BY_CHIPID
+#ccflags-y += -DCONFIG_UWE5622
 BSP_CHIP_ID := uwe5622
 WCN_HW_TYPE := sdio
 endif
@@ -129,9 +129,9 @@ ccflags-y += -DCONFIG_WCN_BOOT
 ccflags-y += -DCONFIG_WCN_UTILS
 
 #### include path ######
-ccflags-y += -I$(src)/include/
-ccflags-y += -I$(src)/platform/
-ccflags-y += -I$(src)/platform/rf/
+ccflags-y += -I$(UNISOCWCN_DIR)/include/
+ccflags-y += -I$(UNISOCWCN_DIR)/platform/
+ccflags-y += -I$(UNISOCWCN_DIR)/platform/rf/
 
 #### add cflag for Customer ######
 ### ---------- Hisilicon start ---------- ###
@@ -405,7 +405,7 @@ KDIR ?= $(ANDROID_PRODUCT_OUT)/obj/KERNEL_OBJ
 ARCH ?= arm
 CROSS_COMPILE ?= arm-histbv310-linux-
 
-EXTRA_CFLAGS += -I$(src)/include -D__linux__
+EXTRA_CFLAGS += -I$(UNISOCWCN_DIR)/include -D__linux__
 
 all: $(all_dependencies)
 

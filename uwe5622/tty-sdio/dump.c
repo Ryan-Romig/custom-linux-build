@@ -82,14 +82,14 @@ void bt_host_data_save(const unsigned char *buf, int count, unsigned char data_i
 		case BT_DATA_OUT:
 			memset(data_dump->tx[BT_MAX_DUMP_FRAME_LEN - 1], 0, BT_MAX_DUMP_DATA_LEN);
 			memcpy(data_dump->tx[BT_MAX_DUMP_FRAME_LEN - 1], buf, count);
-		break;
+			break;
 		case BT_DATA_IN:
 			memset(data_dump->rx[BT_MAX_DUMP_FRAME_LEN - 1], 0, BT_MAX_DUMP_DATA_LEN);
 			memcpy(data_dump->rx[BT_MAX_DUMP_FRAME_LEN - 1], buf, count);
 			break;
 		default:
 			break;
-	}
+		}
 	} else {
 		switch (data_inout) {
 		case BT_DATA_OUT:

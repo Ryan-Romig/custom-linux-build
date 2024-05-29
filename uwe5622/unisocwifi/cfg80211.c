@@ -817,6 +817,20 @@ int sprdwl_change_beacon(struct sprdwl_vif *vif,
 	return ret;
 }
 
+static char *sprd_strncpy(char *dest, const char *src, size_t count)
+{
+        char *tmp = dest;
+
+        while (count) {
+                if ((*tmp = *src) != 0)
+                        src++;
+                tmp++;
+                count--;
+        }
+        return dest;
+}
+
+
 static int sprdwl_cfg80211_start_ap(struct wiphy *wiphy,
 					struct net_device *ndev,
 					struct cfg80211_ap_settings *settings)
@@ -850,7 +864,7 @@ static int sprdwl_cfg80211_start_ap(struct wiphy *wiphy,
 		wl_ndev_log(L_ERR, ndev, "%s invalid SSID!\n", __func__);
 		return -EINVAL;
 	}
-	strncpy(vif->ssid, settings->ssid, settings->ssid_len);
+	sprd_strncpy(vif->ssid, settings->ssid, settings->ssid_len);
 	vif->ssid_len = settings->ssid_len;
 
 #ifdef STA_SOFTAP_SCC_MODE
@@ -921,7 +935,7 @@ static int sprdwl_cfg80211_start_ap(struct wiphy *wiphy,
 	*(data + index) = (u8)(settings->ssid_len + 1);
 	index += 1;
 	/* copy ssid */
-	strncpy(data + index, settings->ssid, settings->ssid_len);
+	sprd_strncpy(data + index, settings->ssid, settings->ssid_len);
 	index += settings->ssid_len;
 	/* set hidden ssid flag */
 	*(data + index) = (u8)settings->hidden_ssid;
@@ -964,9 +978,10 @@ err_start:
 
 static int sprdwl_cfg80211_change_beacon(struct wiphy *wiphy,
 					 struct net_device *ndev,
-					 struct cfg80211_beacon_data *beacon)
+					 struct cfg80211_ap_update *params)
 {
 	struct sprdwl_vif *vif = netdev_priv(ndev);
+	struct cfg80211_beacon_data *beacon = &params->beacon;
 
 	wl_ndev_log(L_DBG, ndev, "%s\n", __func__);
 #ifdef DFS_MASTER
@@ -1531,7 +1546,7 @@ static int sprdwl_cfg80211_scan(struct wiphy *wiphy,
 			if (!ssids[i].ssid_len)
 				continue;
 			scan_ssids->len = ssids[i].ssid_len;
-			strncpy(scan_ssids->ssid, ssids[i].ssid,
+			sprd_strncpy(scan_ssids->ssid, ssids[i].ssid,
 				ssids[i].ssid_len);
 			scan_ssids_len += (ssids[i].ssid_len
 					   + sizeof(scan_ssids->len));
@@ -2006,7 +2021,7 @@ static int sprdwl_cfg80211_connect(struct wiphy *wiphy, struct net_device *ndev,
 	if (!sme->ssid) {
 		wl_ndev_log(L_DBG, ndev, "No SSID specified!\n");
 	} else {
-		strncpy(con.ssid, sme->ssid, sme->ssid_len);
+		sprd_strncpy(con.ssid, sme->ssid, sme->ssid_len);
 		con.ssid_len = sme->ssid_len;
 		vif->sm_state = SPRDWL_CONNECTING;
 
@@ -2021,7 +2036,7 @@ static int sprdwl_cfg80211_connect(struct wiphy *wiphy, struct net_device *ndev,
 		ret = sprdwl_connect(vif->priv, vif->ctx_id, &con);
 		if (ret)
 			goto err;
-		strncpy(vif->ssid, sme->ssid, sme->ssid_len);
+		sprd_strncpy(vif->ssid, sme->ssid, sme->ssid_len);
 		vif->ssid_len = sme->ssid_len;
 		wl_ndev_log(L_DBG, ndev, "%s %s\n", __func__, vif->ssid);
 	}
@@ -2253,9 +2268,8 @@ void sprdwl_report_scan_result(struct sprdwl_vif *vif, u16 chan, s16 rssi,
 				  ie, ielen, signal, GFP_KERNEL);
 
 	if (unlikely(!bss))
-		;
-		//wl_ndev_log(L_ERR, vif->ndev,
-		//	   "%s failed to inform bss frame!\n", __func__);
+		wl_ndev_log(L_ERR, vif->ndev,
+			   "%s failed to inform bss frame!\n", __func__);
 	cfg80211_put_bss(wiphy, bss);
 
 	/*check log mac flag and call report fake probe*/
@@ -2386,11 +2400,10 @@ void sprdwl_report_connection(struct sprdwl_vif *vif,
 					  mgmt->bssid, tsf,
 					  capability, beacon_interval,
 					  ie, ielen, conn_info->signal, GFP_KERNEL);
-		if (unlikely(!bss))
-			;
-			//wl_ndev_log(L_ERR, vif->ndev,
-			//	   "%s failed to inform bss frame!\n",
-			//	   __func__);
+		//if (unlikely(!bss))
+		//	wl_ndev_log(L_ERR, vif->ndev,
+		//		   "%s failed to inform bss frame!\n",
+		//		   __func__);
 	} else {
 		wl_ndev_log(L_ERR, vif->ndev, "%s No Beason IE!\n", __func__);
 	}
@@ -2706,9 +2719,24 @@ static int sprdwl_cfg80211_mgmt_tx(struct wiphy *wiphy,
 	/* send tx mgmt */
 	if (len > 0) {
 		ret = sprdwl_tx_mgmt(vif->priv, vif->ctx_id,
-					 ieee80211_frequency_to_channel
-					 (chan->center_freq), dont_wait_for_ack,
-					 wait, cookie, buf, len);
+				     ieee80211_frequency_to_channel
+				     (chan->center_freq), dont_wait_for_ack,
+				     wait, cookie, buf, len);
+
+		if (ret == 0 && len == 217 && (chan->center_freq == 2412 || chan->center_freq == 5200)) {
+			int type = ((*buf) & IEEE80211_FCTL_FTYPE) >> 2;
+			int subtype = ((*buf) & IEEE80211_FCTL_STYPE) >> 4;
+			int action = *(buf + MAC_LEN);
+			int action_subtype = *(buf + ACTION_SUBTYPE_OFFSET);
+			if (type == IEEE80211_FTYPE_MGMT && subtype == ACTION_TYPE &&
+				action == PUB_ACTION && action_subtype == 1 &&
+				buf[4] == 0x00 && buf[5] == 0x01 && buf[6] == 0x02 &&
+				buf[7] == 0x03 && buf[8] == 0x04 && buf[9] == 0x05) {
+				printk("sprdwl: %s(%d), DPP Frame Received\n", __func__, __LINE__);
+				cfg80211_mgmt_tx_status(wdev, *cookie, buf, len, 0, GFP_KERNEL);
+			}
+		}
+
 		if (ret)
 			if (!dont_wait_for_ack)
 				cfg80211_mgmt_tx_status(wdev, *cookie, buf, len,
@@ -2865,7 +2893,7 @@ static void sprdwl_cfg80211_stop_p2p_device(struct wiphy *wiphy,
 }
 
 static int sprdwl_cfg80211_tdls_mgmt(struct wiphy *wiphy,
-					 struct net_device *ndev, const u8 *peer,
+					 struct net_device *ndev, const u8 *peer, int link_id,
 					 u8 action_code, u8 dialog_token,
 					 u16 status_code,  u32 peer_capability,
 					 bool initiator, const u8 *buf, size_t len)

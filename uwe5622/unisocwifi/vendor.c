@@ -453,7 +453,7 @@ static int sprdwl_vendor_get_llstat_handler(struct wiphy *wiphy,
 	struct wifi_iface_stat *iface_st;
 	struct sprdwl_llstat_radio *dif_radio;
 	u16 r_len = sizeof(*llst);
-	u8 r_buf[r_len], ret, i;
+	u8 r_buf[sizeof(*llst)], ret, i;
 	u32 reply_radio_length, reply_iface_length;
 
 	struct sprdwl_priv *priv = wiphy_priv(wiphy);
@@ -474,7 +474,7 @@ static int sprdwl_vendor_get_llstat_handler(struct wiphy *wiphy,
 	if (!radio_st || !iface_st || !dif_radio)
 		goto out_put_fail;
 	ret = sprdwl_llstat(priv, vif->ctx_id, SPRDWL_SUBCMD_GET, NULL, 0,
-				r_buf, &r_len);
+			    r_buf, &r_len);
 	if (ret)
 		goto out_put_fail;
 
@@ -485,8 +485,8 @@ static int sprdwl_vendor_get_llstat_handler(struct wiphy *wiphy,
 	/*set data for iface struct*/
 	iface_st->info.mode = vif->mode;
 	memcpy(iface_st->info.mac_addr, vif->ndev->dev_addr,
-		   ETH_ALEN);
-	iface_st->info.state = vif->sm_state;
+	       ETH_ALEN);
+	iface_st->info.state = (enum wifi_connection_state)vif->sm_state;
 	memcpy(iface_st->info.ssid, vif->ssid,
 		   IEEE80211_MAX_SSID_LEN);
 	ether_addr_copy(iface_st->info.bssid, vif->bssid);
@@ -575,7 +575,7 @@ static int sprdwl_vendor_clr_llstat_handler(struct wiphy *wiphy,
 	struct nlattr *tb[SPRDWL_LL_STATS_CLR_MAX + 1];
 	u32 *stats_clear_rsp_mask, stats_clear_req_mask = 0;
 	u16 r_len = sizeof(*stats_clear_rsp_mask);
-	u8 r_buf[r_len];
+	u8 r_buf[sizeof(*stats_clear_rsp_mask)];
 	u32 reply_length, ret, err;
 
 	struct sprdwl_priv *priv = wiphy_priv(wiphy);
@@ -2409,8 +2409,8 @@ static int sprdwl_vendor_memory_dump(struct wiphy *wiphy,
 /*CMD ID:61*/
 static const struct nla_policy sprdwl_get_wifi_info_policy[
 		SPRDWL_ATTR_WIFI_INFO_GET_MAX + 1] = {
-		[SPRDWL_ATTR_WIFI_INFO_DRIVER_VERSION] = {.type = NLA_U8},
-		[SPRDWL_ATTR_WIFI_INFO_FIRMWARE_VERSION] = {.type = NLA_U8},
+		[SPRDWL_ATTR_WIFI_INFO_DRIVER_VERSION] = {.type = NLA_U32},
+		[SPRDWL_ATTR_WIFI_INFO_FIRMWARE_VERSION] = {.type = NLA_U32},
 };
 
 static int sprdwl_vendor_get_driver_info(struct wiphy *wiphy,

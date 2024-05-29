@@ -61,11 +61,7 @@ static int wcn_usb_channel_open(struct inode *inode, struct file *file)
 {
 	struct channel *channel;
 
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(5,19, 2))
 	channel = (struct channel *)pde_data(inode);
-else
-	channel = (struct channel *)PDE_DATA(inode);
-#endif
 
 	if (!channel)
 		return -EIO;

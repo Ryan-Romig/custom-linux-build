@@ -144,10 +144,10 @@ static int prefixcmp(const char *str, const char *prefix)
 
 #if KERNEL_VERSION(3, 19, 0) <= LINUX_VERSION_CODE
 static bool find_callback(struct dir_context *ctx, const char *name, int namlen,
-		     loff_t offset, u64 ino, unsigned int d_type)
+			 loff_t offset, u64 ino, unsigned int d_type)
 #else
 static int find_callback(void *ctx, const char *name, int namlen,
-		     loff_t offset, u64 ino, unsigned int d_type)
+			 loff_t offset, u64 ino, unsigned int d_type)
 #endif
 {
 	int tmp;

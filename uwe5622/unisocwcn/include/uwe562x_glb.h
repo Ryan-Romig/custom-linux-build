@@ -257,6 +257,11 @@ static inline unsigned int reg_value(unsigned int marlin3reg,
 
 #define GNSS_CHIPID_REG 0x603003fc
 
+
+
+
+
+
 /* For MARLIN3 DCACHE */
 #define DCACHE_CMD_ISSUE_START 0X80000000
 #define DCACHE_CMD_CLEAN_ALL 0X00000000

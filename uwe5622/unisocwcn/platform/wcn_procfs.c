@@ -94,12 +94,12 @@ void mdbg_assert_interface(char *str)
 	stop_loopcheck();
 #endif
 
-#if (CONFIG_CP2_ASSERT)
 	memset(mdbg_proc->assert.buf, 0, MDBG_ASSERT_SIZE);
 	strncpy(mdbg_proc->assert.buf, str, len);
 	WCN_INFO("mdbg_assert_interface:%s\n",
 		(char *)(mdbg_proc->assert.buf));
 
+#if (CONFIG_CP2_ASSERT)
 	sprdwcn_bus_set_carddump_status(true);
 #ifndef CONFIG_WCND
 	/* wcn_hold_cpu(); */
@@ -113,8 +113,9 @@ void mdbg_assert_interface(char *str)
 #else
 	WCN_ERR("%s,%s reset & notify...\n", __func__, str);
 	marlin_reset_notify_call(MARLIN_CP2_STS_ASSERTED);
+	marlin_cp2_reset();
 	msleep(1000);
-	marlin_reset_notify_call(MARLIN_CP2_STS_READY);
+	// marlin_reset_notify_call(MARLIN_CP2_STS_READY);
 #endif
 
 }
@@ -439,11 +440,7 @@ static const struct file_operations mdbg_snap_shoot_seq_fops = {
 static int mdbg_proc_open(struct inode *inode, struct file *filp)
 {
 	struct mdbg_proc_entry *entry =
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(5,19, 2))
 		(struct mdbg_proc_entry *)pde_data(inode);
-#else
-		(struct mdbg_proc_entry *)PDE_DATA(inode);
-#endif
 	filp->private_data = entry;
 
 	return 0;
@@ -763,12 +760,6 @@ static ssize_t mdbg_proc_write(struct file *filp,
 		mdbg_assert_interface("massert");
 		return count;
 	}
-
-	if (strncmp(mdbg_proc->write_buf, "startgps", 7) == 0) {
-		start_marlin(MARLIN_GNSS);
-		return count;
-	}
-
 
 
 	/* unit of loglimitsize is MByte. */
