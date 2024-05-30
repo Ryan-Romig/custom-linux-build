@@ -2,7 +2,9 @@
 
 
 export IMAGE_NAME="linux.img"
-
+mkdir -p out/cache/modules
+mkdir -p mount/boot
+mkdir -p mount/rootfs
 export PROJECT_ROOT_DIR=${PWD}
 export OUTPUT_DIR=${PROJECT_ROOT_DIR}/out
 export MODULES_OUTPUT_PATH=${OUTPUT_DIR}/modules
