@@ -1,7 +1,7 @@
 config SPARD_WLAN_SUPPORT
 	bool "Unisoc wireless Support"
 	select RK_WIFI_DEVICE_UWE5622  if SPARD_WLAN_SUPPORT
-	default n
+	default y
 	help
 	  This is support for spreadtrum wireless chip.
 

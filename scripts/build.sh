@@ -43,9 +43,9 @@ sudo cp ${PROJECT_ROOT_DIR}/out/boot.scr ${PROJECT_ROOT_DIR}/mount/boot/boot.scr
 sudo dd if=${UBOOT_FILE} of=/dev/loop88 seek=8 bs=1024 status=progress
 
 
-curl https://images.linuxcontainers.org/images/openwrt/23.05/arm64/default/20240528_12%3A10/rootfs.tar.xz -o rootfs.tar.xz 
+# curl https://images.linuxcontainers.org/images/debian/bullseye/arm64/default/20240527_05%3A24/rootfs.tar.xz -o rootfs.tar.xz >> /dev/null
 
-tar -xvf rootfs.tar.xz -C ${PROJECT_ROOT_DIR}/out/cache/rootfs/
+# tar -xvf rootfs.tar.xz -C ${PROJECT_ROOT_DIR}/out/cache/rootfs/ >> /dev/null
 sudo cp -r ${PROJECT_ROOT_DIR}/out/cache/rootfs/* ${PROJECT_ROOT_DIR}/mount/rootfs >> /dev/null
 #sudo cp -r ${PROJECT_ROOT_DIR}/src/rootfs/rootfs/* ${PROJECT_ROOT_DIR}/mount/rootfs >> /dev/null
 
