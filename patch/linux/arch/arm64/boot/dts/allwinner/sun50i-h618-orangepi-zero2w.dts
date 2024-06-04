@@ -6,7 +6,7 @@
 	serial-number = "33802000c46ac590";
 	#size-cells = <0x02>;
 	interrupt-parent = <0x01>;
-	compatible = "xunlong,orangepi-zero2w\0allwinner,sun50i-h616";
+	compatible = "xunlong,orangepi-zero2w\allwinner,sun50i-h616\allwinner,sun50i-h618";
 
 	vcc5v {
 		regulator-max-microvolt = <0x4c4b40>;
