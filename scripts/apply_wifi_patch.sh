@@ -10,4 +10,5 @@ sed -i "/endif # WLAN/i ${KCONFIG_PATCH_STRING}" ${PROJECT_ROOT_DIR}/src/linux/d
 # cp patch/dts/melodia.dts ${PROJECT_ROOT_DIR}/src/linux/arch/arm64/boot/dts/allwinner/
 # cp patch/dts/Makefile ${PROJECT_ROOT_DIR}/src/linux/arch/arm64/boot/dts/allwinner/
 
-cp -rf ${PROJECT_ROOT_DIR}/patch/linux/* ${PROJECT_ROOT_DIR}/src/linux
+# cp -rf 
+rsync -a ${PROJECT_ROOT_DIR}/patch/linux/ ${PROJECT_ROOT_DIR}/src/linux
