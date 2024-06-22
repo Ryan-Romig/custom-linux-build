@@ -1,8 +1,8 @@
 sudo apt-get install x11vnc xvfb
 git clone https://github.com/novnc/noVNC.git
-Xvfb :1 -screen 0 1024x768x16 &export DISPLAY=:1./app &
+Xvfb :1 -screen 0 1024x768x16 &
+export DISPLAY=:1
+./app &
 x11vnc -display :1 -localhost -nopw -listen localhost -xkb -ncache 10 -ncache_cr -forever &
 cd noVNC
 ./utils/launch.sh --vnc localhost:5900 &
-
-
