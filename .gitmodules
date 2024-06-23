@@ -10,3 +10,6 @@
 	path = src/u-boot
 	url = https://git.denx.de/u-boot.git
 	branch = v2024.04
+[submodule "client"]
+	path = client
+	url = https://github.com/Ryan-Romig/Melodia-Launcher.git
