@@ -1,5 +1,5 @@
 sudo apt-get install x11vnc xvfb
-git clone https://github.com/novnc/noVNC.git
+git clone https://github.com/novnc/noVNC.git external/noVNC
 Xvfb :1 -screen 0 1024x768x16 &
 export DISPLAY=:1
 ./app &
