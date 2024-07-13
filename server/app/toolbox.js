@@ -22,4 +22,9 @@ const executeSystemCommand = (commandString) => {
   )
 }
 
-module.exports = { getAllPossibleCombinations, asyncForEach, executeSystemCommand }
+const launchWebApp = (url) => {
+  const { executeSystemCommand } = require('../toolbox')
+  executeSystemCommand(`DISPLAY=:1 google-chrome --start-maximized  --kiosk --profile-directory=Default --app=${url}`)
+}
+
+module.exports = { getAllPossibleCombinations, asyncForEach, executeSystemCommand, launchWebApp }

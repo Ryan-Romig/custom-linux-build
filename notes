@@ -1,8 +1,17 @@
 sudo apt-get install x11vnc xvfb
 git clone https://github.com/novnc/noVNC.git external/noVNC
-Xvfb :1 -screen 0 1024x768x16 &
-export DISPLAY=:1
+Xvfb :1 -screen 0 2340x1080x16 &
+sudo Xorg -noreset +extension GLX +extension RANDR +extension RENDER -logfile ./10.log -config  :4 /etc/X11/xorg.conf.d/dummy-1920x1080.conf &
+export DISPLAY=:4
 ./app &
-x11vnc -display :1 -localhost -nopw -listen localhost -xkb -ncache 10 -ncache_cr -forever &
+x11vnc -display :4 -localhost -nopw -listen localhost -xkb -ncache 10 -ncache_cr -forever &
 cd noVNC
 ./utils/launch.sh --vnc localhost:5900 &
+
+DISPLAY=:4 xrandr --output Virtual1 --mode 1280x720
+
+
+
+
+vncserver :4 -localhost no -geometry 1280x800 -depth 24 -SecurityTypes None --I-KNOW-THIS-IS-INSECURE
+./external/noVNC/utils/novnc_proxy --vnc localhost:5904 &
