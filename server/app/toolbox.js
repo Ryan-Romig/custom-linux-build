@@ -1,3 +1,4 @@
+const { exec,  } = require('child_process');
 const getAllPossibleCombinations = () => {
   const result = []
   return result
@@ -10,21 +11,21 @@ const asyncForEach = async (array, callback) => {
 }
 
 const executeSystemCommand = (commandString) => {
-  const { exec } = require('child_process');
 
   exec(commandString, (err, stdout, stderr) => {
     if (err) {
-      console.error(err);
+      console.error(`Error executing command: ${commandString}`, err);
       return;
     }
-    console.log
-  }
-  )
+    if (stdout) console.log(`Command output: ${stdout}`);
+    if (stderr) console.error(`Command error output: ${stderr}`);
+  });
 }
+const mobileUserAgentString = '--user-agent="Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.6478.122 Mobile Safari/537.36"'
+const launchWebApp = (url,mode) => {
+  const userAgentString = mode === 'mobile' ? mobileUserAgentString : ''
 
-const launchWebApp = (url) => {
-  const { executeSystemCommand } = require('../toolbox')
-  executeSystemCommand(`DISPLAY=:1 google-chrome --start-maximized  --kiosk --profile-directory=Default --app=${url}`)
+  executeSystemCommand(`DISPLAY=:44 chromium-browser ${userAgentString} --start-maximized  --kiosk --profile-directory=Default --app=${url}`)
 }
 
 module.exports = { getAllPossibleCombinations, asyncForEach, executeSystemCommand, launchWebApp }

@@ -40,7 +40,7 @@ const RemoteView = () => {
           <div style={{ width: '100%', height: '96svh', margin:'0px', padding:'0px' }}>
     
             <iframe
-              src="http://pop-os:6080/vnc.html?host=pop-os&port=6080"
+              src="http://pop-os:6080/vnc.html?autoconnect=true&host=pop-os&port=6080&scaling=loca&showControls=false"
               width="100%"
               height="100%"
               title="melodia-remote"
