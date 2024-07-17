@@ -1,5 +1,5 @@
-var redirect_uri = "https://makeratplay.github.io/SpotifyWebAPI/"; // change this your value
-//var redirect_uri = "http://127.0.0.1:5500/index.html";
+// var redirect_uri = "https://makeratplay.github.io/SpotifyWebAPI/"; // change this your value
+var redirect_uri = "http://127.0.0.1:5173/spotify";
  
 
 var client_id = ""; 
@@ -33,11 +33,12 @@ function onPageLoad(){
         access_token = localStorage.getItem("access_token");
         if ( access_token == null ){
             // we don't have an access token so present token section
-            document.getElementById("tokenSection").style.display = 'block';  
+            // document.getElementById("tokenSection").style.display = 'block';  
+            requestAuthorization();
         }
         else {
             // we have an access token so present device section
-            document.getElementById("deviceSection").style.display = 'block';  
+            // document.getElementById("deviceSection").style.display = 'block';  
             refreshDevices();
             refreshPlaylists();
             currentlyPlaying();
@@ -62,9 +63,15 @@ function getCode(){
     return code;
 }
 
-function requestAuthorization(){
-    client_id = document.getElementById("clientId").value;
-    client_secret = document.getElementById("clientSecret").value;
+const  requestAuthorization = () => {
+    // client_id = document.getElementById("clientId").value;
+    // client_secret = document.getElementById("clientSecret").value;
+
+    client_id = "f23e4a124ee14b52b1be726f4fe1649e";
+    client_secret = "4d5d1473ec6e47bcaa0675f1fb909de0";
+    
+
+
     localStorage.setItem("client_id", client_id);
     localStorage.setItem("client_secret", client_secret); // In a real app you should not expose your client_secret to the user
 
@@ -74,7 +81,7 @@ function requestAuthorization(){
     url += "&redirect_uri=" + encodeURI(redirect_uri);
     url += "&show_dialog=true";
     url += "&scope=user-read-private user-read-email user-modify-playback-state user-read-playback-position user-library-read streaming user-read-playback-state user-read-recently-played playlist-read-private";
-    window.location.href = url; // Show Spotify's authorization screen
+    window.location.href =  url; // Show Spotify's authorization screen
 }
 
 function fetchAccessToken( code ){
@@ -126,6 +133,8 @@ function handleAuthorizationResponse(){
 
 function refreshDevices(){
     callApi( "GET", DEVICES, null, handleDevicesResponse );
+    let devices = JSON.parse(localStorage.getItem("devices"));
+    return devices;
 }
 
 function handleDevicesResponse(){
@@ -133,6 +142,7 @@ function handleDevicesResponse(){
         var data = JSON.parse(this.responseText);
         console.log(data);
         removeAllItems( "devices" );
+        localStorage.setItem("devices", JSON.stringify(data.devices));
         data.devices.forEach(item => addDevice(item));
     }
     else if ( this.status == 401 ){
@@ -145,10 +155,10 @@ function handleDevicesResponse(){
 }
 
 function addDevice(item){
-    let node = document.createElement("option");
-    node.value = item.id;
-    node.innerHTML = item.name;
-    document.getElementById("devices").appendChild(node); 
+    // let node = document.createElement("option");
+    // node.value = item.id;
+    // node.innerHTML = item.name;
+    // document.getElementById("devices").appendChild(node); 
 }
 
 function callApi(method, url, body, callback){
@@ -170,7 +180,7 @@ function handlePlaylistsResponse(){
         console.log(data);
         removeAllItems( "playlists" );
         data.items.forEach(item => addPlaylist(item));
-        document.getElementById('playlists').value=currentPlaylist;
+        // document.getElementById('playlists').value=currentPlaylist;
     }
     else if ( this.status == 401 ){
         refreshAccessToken()
@@ -182,17 +192,17 @@ function handlePlaylistsResponse(){
 }
 
 function addPlaylist(item){
-    let node = document.createElement("option");
-    node.value = item.id;
-    node.innerHTML = item.name + " (" + item.tracks.total + ")";
-    document.getElementById("playlists").appendChild(node); 
+    // let node = document.createElement("option");
+    // node.value = item.id;
+    // node.innerHTML = item.name + " (" + item.tracks.total + ")";
+    // document.getElementById("playlists").appendChild(node); 
 }
 
 function removeAllItems( elementId ){
-    let node = document.getElementById(elementId);
-    while (node.firstChild) {
-        node.removeChild(node.firstChild);
-    }
+    // let node = document.getElementById(elementId);
+    // while (node.firstChild) {
+    //     node.removeChild(node.firstChild);
+    // }
 }
 
 function play(){
@@ -282,10 +292,10 @@ function handleTracksResponse(){
 }
 
 function addTrack(item, index){
-    let node = document.createElement("option");
-    node.value = index;
-    node.innerHTML = item.track.name + " (" + item.track.artists[0].name + ")";
-    document.getElementById("tracks").appendChild(node); 
+    // let node = document.createElement("option");
+    // node.value = index;
+    // node.innerHTML = item.track.name + " (" + item.track.artists[0].name + ")";
+    // document.getElementById("tracks").appendChild(node); 
 }
 
 function currentlyPlaying(){
@@ -359,9 +369,45 @@ function onRadioButton( deviceId, playlistId ){
 }
 
 function addRadioButton(item, index){
-    let node = document.createElement("button");
-    node.className = "btn btn-primary m-2";
-    node.innerText = index;
-    node.onclick = function() { onRadioButton( item.deviceId, item.playlistId ) };
-    document.getElementById("radioButtons").appendChild(node);
+    // let node = document.createElement("button");
+    // node.className = "btn btn-primary m-2";
+    // node.innerText = index;
+    // node.onclick = function() { onRadioButton( item.deviceId, item.playlistId ) };
+    // document.getElementById("radioButtons").appendChild(node);
 }
+
+export {
+    onPageLoad,
+    handleRedirect,
+    getCode,
+    requestAuthorization,
+    fetchAccessToken,
+    refreshAccessToken,
+    callAuthorizationApi,
+    handleAuthorizationResponse,
+    refreshDevices,
+    handleDevicesResponse,
+    addDevice,
+    callApi,
+    refreshPlaylists,
+    handlePlaylistsResponse,
+    addPlaylist,
+    removeAllItems,
+    play,
+    shuffle,
+    pause,
+    next,
+    previous,
+    transfer,
+    handleApiResponse,
+    deviceId,
+    fetchTracks,
+    handleTracksResponse,
+    addTrack,
+    currentlyPlaying,
+    handleCurrentlyPlayingResponse,
+    saveNewRadioButton,
+    refreshRadioButtons,
+    onRadioButton,
+    addRadioButton
+};

@@ -13,5 +13,5 @@ DISPLAY=:4 xrandr --output Virtual1 --mode 1280x720
 
 tigervnc-standalone-server tigervnc-xorg-extension
 
-vncserver :44 -localhost no -geometry 900x1600 -depth 24 -SecurityTypes None --I-KNOW-THIS-IS-INSECURE
+vncserver :44 -localhost no -geometry 900x1600 -depth 24 -SecurityTypes None --I-KNOW-THIS-IS-INSECURE &
 ./external/noVNC/utils/novnc_proxy --vnc localhost:5944 &
