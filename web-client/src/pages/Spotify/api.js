@@ -26,34 +26,39 @@ const SHUFFLE = "https://api.spotify.com/v1/me/player/shuffle";
 function onPageLoad(){
     client_id = localStorage.getItem("client_id");
     client_secret = localStorage.getItem("client_secret");
+    //if the url params are there then we are here after logging into spotify and authorizing the application,
+    // spotify sends back access code as a url param
     if ( window.location.search.length > 0 ){
         handleRedirect();
     }
+    //if we are there and there are 0 url params then we have not authorized the application, 
+    // or we already have an access token
     else{
+        //get access token from local storage. if it is not there it will return null
         access_token = localStorage.getItem("access_token");
+        //if we don't have an access token then we need to authorize the application
         if ( access_token == null ){
-            // we don't have an access token so present token section
-            // document.getElementById("tokenSection").style.display = 'block';  
-            requestAuthorization();
+            //open spotify authorize page. may require login from the user
+            requestAuthorization(); // this will redirect user back to the application
+
         }
+        //if we have an access token then we can use it to make api calls
         else {
-            // we have an access token so present device section
-            // document.getElementById("deviceSection").style.display = 'block';  
             refreshDevices();
             refreshPlaylists();
             currentlyPlaying();
         }
     }
-    refreshRadioButtons();
+    // refreshRadioButtons();
 }
 
-function handleRedirect(){
-    let code = getCode();
+const handleRedirect = async () => {
+    let code = getAccessCodeFromUrlParams();
     fetchAccessToken( code );
     window.history.pushState("", "", redirect_uri); // remove param from url
 }
 
-function getCode(){
+const getAccessCodeFromUrlParams = () => {
     let code = null;
     const queryString = window.location.search;
     if ( queryString.length > 0 ){
@@ -62,7 +67,10 @@ function getCode(){
     }
     return code;
 }
+const getConnectedDevices = async() => {
+    return JSON.parse(localStorage.getItem("devices"));
 
+}
 const  requestAuthorization = () => {
     // client_id = document.getElementById("clientId").value;
     // client_secret = document.getElementById("clientSecret").value;
@@ -134,6 +142,7 @@ function handleAuthorizationResponse(){
 function refreshDevices(){
     callApi( "GET", DEVICES, null, handleDevicesResponse );
     let devices = JSON.parse(localStorage.getItem("devices"));
+    
     return devices;
 }
 
@@ -239,10 +248,10 @@ function previous(){
     callApi( "POST", PREVIOUS + "?device_id=" + deviceId(), null, handleApiResponse );
 }
 
-function transfer(){
+function transfer(device){
     let body = {};
     body.device_ids = [];
-    body.device_ids.push(deviceId())
+    body.device_ids.push(device.id)
     callApi( "PUT", PLAYER, JSON.stringify(body), handleApiResponse );
 }
 
@@ -264,15 +273,15 @@ function handleApiResponse(){
 }
 
 function deviceId(){
-    return document.getElementById("devices").value;
+    // return document.getElementById("devices").value;
 }
 
 function fetchTracks(){
-    let playlist_id = document.getElementById("playlists").value;
-    if ( playlist_id.length > 0 ){
-        url = TRACKS.replace("{{PlaylistId}}", playlist_id);
-        callApi( "GET", url, null, handleTracksResponse );
-    }
+    // let playlist_id = document.getElementById("playlists").value;
+    // if ( playlist_id.length > 0 ){
+    //     url = TRACKS.replace("{{PlaylistId}}", playlist_id);
+    //     callApi( "GET", url, null, handleTracksResponse );
+    // }
 }
 
 function handleTracksResponse(){
@@ -307,23 +316,23 @@ function handleCurrentlyPlayingResponse(){
         var data = JSON.parse(this.responseText);
         console.log(data);
         if ( data.item != null ){
-            document.getElementById("albumImage").src = data.item.album.images[0].url;
-            document.getElementById("trackTitle").innerHTML = data.item.name;
-            document.getElementById("trackArtist").innerHTML = data.item.artists[0].name;
+            // document.getElementById("albumImage").src = data.item.album.images[0].url;
+            // document.getElementById("trackTitle").innerHTML = data.item.name;
+            // document.getElementById("trackArtist").innerHTML = data.item.artists[0].name;
         }
 
 
         if ( data.device != null ){
             // select device
-            currentDevice = data.device.id;
-            document.getElementById('devices').value=currentDevice;
+            // currentDevice = data.device.id;
+            // document.getElementById('devices').value=currentDevice;
         }
 
         if ( data.context != null ){
             // select playlist
             currentPlaylist = data.context.uri;
             currentPlaylist = currentPlaylist.substring( currentPlaylist.lastIndexOf(":") + 1,  currentPlaylist.length );
-            document.getElementById('playlists').value=currentPlaylist;
+            // document.getElementById('playlists').value=currentPlaylist;
         }
     }
     else if ( this.status == 204 ){
@@ -341,9 +350,9 @@ function handleCurrentlyPlayingResponse(){
 function saveNewRadioButton(){
     let item = {};
     item.deviceId = deviceId();
-    item.playlistId = document.getElementById("playlists").value;
+    // item.playlistId = document.getElementById("playlists").value;
     radioButtons.push(item);
-    localStorage.setItem("radio_button", JSON.stringify(radioButtons));
+    // localStorage.setItem("radio_button", JSON.stringify(radioButtons));
     refreshRadioButtons();
 }
 
@@ -379,7 +388,7 @@ function addRadioButton(item, index){
 export {
     onPageLoad,
     handleRedirect,
-    getCode,
+    getAccessCodeFromUrlParams,
     requestAuthorization,
     fetchAccessToken,
     refreshAccessToken,
@@ -409,5 +418,6 @@ export {
     saveNewRadioButton,
     refreshRadioButtons,
     onRadioButton,
-    addRadioButton
+    addRadioButton,
+    getConnectedDevices
 };
