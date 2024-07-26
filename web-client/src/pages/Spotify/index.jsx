@@ -16,9 +16,25 @@ const SpotifyPage = () => {
     // alert(JSON.stringify(devices))
     transfer(devices[0])
   }
+  const handleButtonClick = async () => {
+    try {
+      const response = await fetch('http://127.0.0.1:5000/system/hotspot', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ state: 'on' }),
+      });
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
-    // onPageLoad();
+    onPageLoad();
+    console.log(devices.length)
     // Do something with the devices
     // alert(JSON.stringify(devices.devices))
     setInterval(() => {
@@ -33,9 +49,9 @@ const SpotifyPage = () => {
         {/* <iframe src={url} style={{ width: '100%', height: '100%' }}></iframe> */}
         <button type="button" onClick={handleTransferClick}>Transfer Playback</button>
         {devices && devices.map(device => device.name)}
+        {devices.length <= 0 ? <button type="button" onClick={handleButtonClick}>Start Spotify</button> : ""}
 
       </div>
-
     </>
   );
 }
