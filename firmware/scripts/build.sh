@@ -47,7 +47,7 @@ sudo dd if=${UBOOT_FILE} of=/dev/loop88 seek=8 bs=1024 status=progress
 # mkdir -p ${CACHE_DIR}/rootfs
 # tar -xvf rootfs.tar.xz -C ${PROJECT_ROOT_DIR}/out/cache/rootfs/ >> /dev/null
 sudo cp -r ${PROJECT_ROOT_DIR}/out/cache/rootfs/* ${PROJECT_ROOT_DIR}/mount/rootfs >> /dev/null
-#sudo cp -r ${PROJECT_ROOT_DIR}/src/rootfs/rootfs/* ${PROJECT_ROOT_DIR}/mount/rootfs >> /dev/null
+#sudo cp -r ${SUBMODULE_PATH}/rootfs/rootfs/* ${PROJECT_ROOT_DIR}/mount/rootfs >> /dev/null
 
 #install debootstrap to rootfs
 #sudo debootstrap --arch=arm64 --foreign bullseye  mount/rootfs
