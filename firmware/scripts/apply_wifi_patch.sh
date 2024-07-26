@@ -5,4 +5,4 @@ KCONFIG_PATCH_STRING='source "drivers/net/wireless/uwe5622/Kconfig"'
 echo -e "${WIRELESS_PATCH_STRING}" >> ${SUBMODULE_PATH}/linux/drivers/net/wireless/Makefile
 sed -i "/endif # WLAN/i ${KCONFIG_PATCH_STRING}" ${SUBMODULE_PATH}/linux/drivers/net/wireless/Kconfig
 # sync patch folder to source folder
-rsync -a ${PROJECT_ROOT_DIR}/patch/linux/ ${SUBMODULE_PATH}/linux
+rsync -a ${PROJECT_ROOT_DIR}/firmware/patch/linux/ ${SUBMODULE_PATH}/linux

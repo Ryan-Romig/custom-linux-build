@@ -6,6 +6,7 @@ mkdir -p out/cache/modules
 mkdir -p mount/boot
 mkdir -p mount/rootfs
 export PROJECT_ROOT_DIR=${PWD}
+export FIRMWARE_DIR=${PROJECT_ROOT_DIR}/firmware
 export OUTPUT_DIR=${PROJECT_ROOT_DIR}/out
 export CACHE_DIR=$OUTPUT_DIR/cache
 export MODULES_OUTPUT_PATH=${CACHE_DIR}/modules
@@ -17,7 +18,7 @@ export LOOP_DEVICE=/dev/loop88
 export OUTPUT_FILE=${OUTPUT_DIR}/${IMAGE_NAME}
 
 export UBOOT_FILE=${SUBMODULE_PATH}/src/u-boot/u-boot-sunxi-with-spl.bin
-export UBOOT_SCRIPT_FILE=${PROJECT_ROOT_DIR}/config/boot.cmd
+export UBOOT_SCRIPT_FILE=${FIRMWARE_DIR}/config/boot.cmd
 export KERNEL_FILE=${SUBMODULE_PATH}/linux/arch/arm64/boot/Image
 export ROOTFS_DIR=${PROJECT_ROOT_DIR}/debootstrap
 

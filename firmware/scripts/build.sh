@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-source scripts/bootstrap.sh
+source firmware/scripts/bootstrap.sh
 echo $OUTPUT_FILE $OUTPUT_DIR $PROJECT_ROOT_DIR
 
 # create image file 
