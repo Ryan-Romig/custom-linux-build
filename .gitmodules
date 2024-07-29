@@ -1,0 +1,10 @@
+[submodule "firmware/src/linux"]
+	path = firmware/src/linux
+	url = https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
+	branch = v6.6.43
+[submodule "firmware/src/u-boot"]
+	path = firmware/src/u-boot
+	url = ./firmware/src/u-boot
+[submodule "firmware/src/trusted-firmware-a"]
+	path = firmware/src/trusted-firmware-a
+	url = https://git.trustedfirmware.org/TF-A/trusted-firmware-a.git
