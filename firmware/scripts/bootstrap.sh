@@ -23,7 +23,7 @@ export KERNEL_FILE=${SUBMODULE_PATH}/linux/arch/arm64/boot/Image
 export ROOTFS_DIR=${PROJECT_ROOT_DIR}/debootstrap
 
 export DEVICE_TREE_BINARY=${SUBMODULE_PATH}/linux/arch/arm64/boot/dts/allwinner/sun50i-h618-orangepi-zero2w.dtb
-export IMAGE_SIZE_MB=1024
+export IMAGE_SIZE_MB=2048
 export BOOT_PARTITION_SIZE_MB=100
 
 
