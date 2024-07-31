@@ -4,7 +4,7 @@
     branch = v6.6.43
 [submodule "firmware/src/u-boot"]
     path = firmware/src/u-boot
-    url = ./firmware/src/u-boot
+    url = https://source.denx.de/u-boot/u-boot.git
     branch = v2024.07
 [submodule "firmware/src/trusted-firmware-a"]
     path = firmware/src/trusted-firmware-a
