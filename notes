@@ -10,6 +10,8 @@ cd noVNC
 
 DISPLAY=:4 xrandr --output Virtual1 --mode 1280x720
 
+git fetch --depth 1 origin refs/tags/v6.9:refs/tags/v6.9
+git checkout tags/v6.9
 
 tigervnc-standalone-server tigervnc-xorg-extension
 
